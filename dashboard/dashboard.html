@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Violet Wave - Admin Dashboard</title>
+  <link rel="stylesheet" href="style1.css">
+</head>
+<body>
+  <div class="dashboard">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h2>Violet Wave</h2>
+        
+      </div>
+      <nav class="sidebar-nav">
+        <ul>
+          <li><a href="#">Dashboard</a></li>
+          <li><a href="#">Clients</a></li>
+          <li><a href="#">Plans</a></li>
+          <li><a href="#">Support</a></li>
+          <li><a href="#">Reports</a></li>
+          <li><a href="#">Logout</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <header class="header">
+        <h1>Welcome to Violet Wave Admin Panel</h1>
+        <div class="user-profile">
+          <span>Hello, Admin</span>
+        </div>
+      </header>
+      <section class="content">
+        <div class="card">
+            <h3>Client WiFi Usage</h3>
+            <canvas id="wifiUsageChart"></canvas>
+          </div>
+        <div class="card">
+          <h3>Payment History</h3>
+          <table id="paymentTable">
+            <thead>
+              <tr>
+                <th>Client Name</th>
+                <th>Plan</th>
+                <th>Amount Paid</th>
+                <th>Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Data akan diisi dengan JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </div>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      const ctx = document.getElementById('wifiUsageChart').getContext('2d');
+      const wifiUsageChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Client 1', 'Client 2', 'Client 3', 'Client 4', 'Client 5'],
+          datasets: [{
+            label: 'Data Usage (GB)',
+            data: [20, 35, 15, 50, 40],
+            backgroundColor: [
+              'rgba(106, 13, 173, 0.7)',
+              'rgba(123, 31, 162, 0.7)',
+              'rgba(156, 39, 176, 0.7)',
+              'rgba(171, 71, 188, 0.7)',
+              'rgba(186, 104, 200, 0.7)'
+            ],
+            borderColor: [
+              'rgba(106, 13, 173, 1)',
+              'rgba(123, 31, 162, 1)',
+              'rgba(156, 39, 176, 1)',
+              'rgba(171, 71, 188, 1)',
+              'rgba(186, 104, 200, 1)'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    </script>
+
+  <!-- Script -->
+  <script>
+    const paymentData = [
+      { name: "Ivan", plan: "Premium", amount: "$50", date: "2024-12-01", status: "Paid" },
+      { name: "Tissa", plan: "Reguler", amount: "$20", date: "2024-12-03", status: "Pending" },
+      { name: "Vera", plan: "Reguler", amount: "$35", date: "2024-12-05", status: "Paid" },
+      { name: "Rohman", plan: "Premium", amount: "$100", date: "2024-12-08", status: "Paid" },
+      { name: "Lutpi", plan: "Reguler", amount: "$20", date: "2024-12-10", status: "Overdue" }
+    ];
+
+    const loadPaymentTable = () => {
+      const tableBody = document.getElementById('paymentTable').querySelector('tbody');
+      paymentData.forEach(payment => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${payment.name}</td>
+          <td>${payment.plan}</td>
+          <td>${payment.amount}</td>
+          <td>${payment.date}</td>
+          <td>${payment.status}</td>
+        `;
+        if (payment.status === "Pending") row.querySelector('td:last-child').style.color = "orange";
+        else if (payment.status === "Overdue") row.querySelector('td:last-child').style.color = "red";
+        else if (payment.status === "Paid") row.querySelector('td:last-child').style.color = "green";
+        tableBody.appendChild(row);
+      });
+    };
+
+    document.addEventListener('DOMContentLoaded', loadPaymentTable);
+  </script>
+</body>
+</html>
